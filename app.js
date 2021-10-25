@@ -1,31 +1,30 @@
-class Shape {
-  constructor(name, sides, sideLength) {
-    this.name = name;
-    this.sides = sides;
-    this.sideLength = sideLength;
-    }
-  
-  calcPerimeter(){
-    return this.sides * this.sideLength;
-  }
+ui = new UI();
+ls = new LS();
+
+const form = document.querySelector('form');
+const titleInput = document.querySelector('#title');
+const authorInput = document.querySelector('#author');
+const isbnInput = document.querySelector('#isbn')
+const bookData = document.querySelector('tbody');
+bookData.addEventListener('click', delBook);
+document.addEventListener('DOMContentLoaded', getBooks);
+form.addEventListener('submit', addBook);
+
+function addBook(e) {
+    const book = new Book(titleInput.value, authorInput.value, isbnInput.value);
+    ui.addBook(book);
+    ls.addBook(book);
+    e.preventDefault();
 }
 
-class Square extends Shape {
-  constructor(sideLength) {
-    super("square" ,4 ,sideLength);
-  }
-  calcArea(){
-    return this.sideLength * this.sideLength
-  }
+function delBook(e) {
+    let book = e.target.parentElement.parentElement;
+    ui.delBook(book);
+    book = book.firstChild.textContent;
+    ls.delBook(book);
 }
 
-let square = new Square(5);
-
-
-console.log(square);
-console.log(square.calcPerimeter());
-console.log(square.calcArea());
-
-let triangle = new Shape("triangle", 3, 3);
-console.log(triangle);
-console.log(triangle.calcPerimeter());
+function getBooks(e) {
+    books = ls.getData('books');
+    ui.getBooks(books);
+}
